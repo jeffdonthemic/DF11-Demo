@@ -1,0 +1,7 @@
+This is the code for my Dreamforce 11 presentation, "Connect your Clouds with Force.com". The code is broken up in the different parts of the application, namely azure (actually java code), google app engine (java), salesforce (aws) and heroku.
+
+Jeff Douglas
+Appirio
+
+http://blog.jeffdouglas.com
+http://www.cloudspokes.com

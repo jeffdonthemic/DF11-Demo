@@ -1,0 +1,44 @@
+<apex:page standardController="AWS_S3_Object__c" extensions="S3FormController" action="{!page2onLoad}">
+
+ 
+
+	<form 
+		action="https://s3.amazonaws.com/{!AWS_S3_Object__c.Bucket_Name__c}"
+		method="post" enctype="multipart/form-data"><input
+		type="hidden"  name="key"
+		value="{!AWS_S3_Object__c.File_Name__c}" /> <input type="hidden"
+		 name="AWSAccessKeyId" value="{!key}" /> <input
+		type="hidden"  name="policy" value="{!policy}" /> <input
+		type="hidden"  name="signature" value="{!signedPolicy}" /> <input
+		type="hidden"  name="acl"
+		value="{!AWS_S3_Object__c.Access__c}" /> 
+	<!-- 	<input type="hidden"
+		name="success_action_status" value="201">  -->
+		
+		<input type="hidden"  name="Content-Type" value="{!AWS_S3_Object__c.Content_Type__c}" /> 
+		
+		<input type="hidden" name="success_action_redirect" value="https://{!serverURL}/{!AWS_S3_Object__c.id}" /> <apex:pageBlock title="New S3 Object" mode="edit">
+		<apex:pageBlockButtons >
+			<input class="btn" type="submit" value="Send to Amazon" />
+			
+			
+		</apex:pageBlockButtons>
+
+		<apex:pageBlockSection title="Local File to load" columns="1">
+
+			<apex:pageBlockSectionItem >
+				<apex:outputLabel value="Storage Path" />
+				<apex:outputText >
+			{!AWS_S3_Object__c.Bucket_Name__c}/{!AWS_S3_Object__c.File_Name__c}
+			</apex:outputText>
+			</apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem >
+
+				<apex:outputLabel value="File to upload" />
+				<input type="file" size="50" name="file" />
+			</apex:pageBlockSectionItem>
+
+		</apex:pageBlockSection>
+	</apex:pageBlock></form>
+
+</apex:page>

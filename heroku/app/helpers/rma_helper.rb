@@ -1,0 +1,2 @@
+module RmaHelper
+end

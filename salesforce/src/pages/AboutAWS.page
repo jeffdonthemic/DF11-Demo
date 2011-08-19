@@ -1,0 +1,59 @@
+<apex:page >
+
+    <!-- Start page content -->
+    <a name="skiplink"><img src="/s.gif" height='1' width='1'
+        alt="Content Starts Here" class="skiplink" title="Content Starts Here" /></a>
+    <div id="ootbe_container">
+    <div id="bannerlanding"><a href=""> <img src="" /></a></div>
+
+    <div id="contentcontainer">
+
+    <div class="col3" id="content"  style="font-family: Arial;">
+<H3>Force.com for Amazon Web Services</h3><br>
+<br style="font-family: Arial;"><span style="font-family: Arial;">
+The Force.com for Amazon Web Services distribution brings two of the most popular cloud platforms together, 
+letting developers easily create applications that combine the power of Force.com and the Amazon Web 
+Services (AWS).&nbsp; Combining a framework for authentication, native access to the AWS Simple Storage System, 
+and pre-built Amazon Machine Images (AMI), the toolkit provides the foundations nessesary to take advantage of 
+these Amazon services directly within Force.com.&nbsp; Offered as an installable package, the toolkit includes:</span>
+<br style="font-family: Arial;">
+<p class="western" style="margin-bottom: 0in; font-family: Arial;"><br>
+</p>
+<ul style="font-family: Arial;"><li><p class="western" style="margin-bottom: 0in;"><font size="2"><b>Force.com
+    for Amazon S3:</b>&nbsp; </font><font size="2">With this integration, the S3
+    service is made available 'natively' in the Force.com environment
+    via an S3 Toolkit that wraps the S3
+    API and access methods and made them directly available within Apex
+    code.&nbsp; Through this Apex integration, S3 and its
+    operations can be&nbsp; included in Force.com application
+    flows in a discrete and semantically rich fashion, including the
+    ability to automatically add, remove or modify S3 objects based on
+    workflow and data changes in a Force.com application.</font></p></li></ul>
+
+<p class="western" style="margin-bottom: 0in; font-family: Arial;"><br>
+</p>
+<ul style="font-family: Arial;"><li><p class="western" style="margin-bottom: 0in;"><font size="2"><b>Force.com
+    for Amazon EC2:</b>&nbsp;&nbsp;&nbsp; Using
+    EC2, developers can extend their Force.com applications with
+    existing programming languages, such as PHP or Ruby, or pre-existing
+    executables and libraries.&nbsp; This toolkit is represented by
+    pre-built Amazon Machine Images (AMIs) that have the full context,
+    including language runtimes, configurations, and connections to
+    associated API libraries, necessary to extend Force.com.&nbsp;
+    Developers can use EC2 to simply instantiate the AMI and immediately
+    begin development, without any additional configuration or
+    installation procedures. The first AMI being made available is to
+    use PHP with Force.com.</font></p></li></ul><br style="font-family: Arial;"><b>
+    
+
+    <a href="http://wiki.apexdevnet.com/index.php/toolkit_for_amazon_web_services">Essential Resources</a>
+    
+    </div>
+
+    <div id="right"></div>
+    </div>
+    <div class="spacer"></div>
+    </div>
+    <div class="spacer"></div>
+
+</apex:page>

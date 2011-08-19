@@ -1,0 +1,56 @@
+<apex:page standardController="AWS_S3_Object__c" extensions="S3FormController" action="{!constructor}">
+    <apex:pageMessages />
+	<apex:form >
+	    <apex:inputHidden value="{!serverURL}" id="hiddenServerURL" />
+		<script  type="text/javascript">
+			document.getElementById('{!$Component.hiddenServerURL}').value = '{!$Api.Enterprise_Server_URL_140}';			
+		</script>	    
+		
+		<apex:pageBlock title="New S3 Object" mode="edit">
+
+			<apex:pageBlockButtons >
+
+				<apex:commandButton action="{!save1}" value="Continue" >
+				 	<!-- <apex:param name="urlParam" value="{!$Api.Enterprise_Server_URL_140}" />  -->
+				</apex:commandButton>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection title="Step 1: Specify Bucket and Object Name" columns="1">
+			
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Bucket Name" for="b__name" />
+					<apex:selectList value="{!AWS_S3_Object__c.Bucket_Name__c}"
+						multiselect="false" size="1">
+						<apex:selectOptions value="{!BucketOptions}" />
+					</apex:selectList>
+				</apex:pageBlockSectionItem>
+				<br />
+
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel value="Destination File Name" for="objName" />
+					<apex:inputField value="{!AWS_S3_Object__c.File_Name__c}"
+						id="objName" required="true" onblur="popType(this);" />
+				</apex:pageBlockSectionItem>
+				<br />
+				
+				<apex:pageBlockSectionItem >
+
+					<apex:outputLabel value="Content Type" />
+					<apex:inputField value="{!AWS_S3_Object__c.Content_Type__c}"
+						id="ctype" required="true" >
+							<script type="text/javascript">
+							function popType(element) {
+							 // if there is a suffix , set that value into the content type picklist
+							 // add more mime types to the content_type picklist as needed
+							 var suffix = element.value.replace(/.*\./,'');
+							 if (suffix != null) {
+							 	document.getElementById('{!$Component.ctype}').value = suffix;
+							 }
+							}
+							</script>
+						</apex:inputField>
+				</apex:pageBlockSectionItem>
+
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

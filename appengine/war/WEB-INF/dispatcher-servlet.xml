@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="salesOrderLookupController" class="com.jeffdouglas.controller.SalesOrderLookupController">
+	 	<property name="formView"><value>salesOrderLookup</value></property>
+		<property name="successView"><value>/salesOrderLookup.htm</value></property>
+		<property name="commandClass"><value>com.jeffdouglas.model.SearchCommand</value></property>		
+	</bean>
+	
+	<bean id="salesOrderDisplayController" class="com.jeffdouglas.controller.SalesOrderDisplayController"/>
+	
+	<bean id="rmaDisplayController" class="com.jeffdouglas.controller.RmaDisplayController"/>
+	
+	<bean id="rmaCreateController" class="com.jeffdouglas.controller.RmaCreateController">
+ 		<property name="formView"><value>rmaCreate</value></property>
+		<property name="successView"><value>redirect:/rmaDisplay.htm</value></property>	
+		<property name="commandClass"><value>com.jeffdouglas.model.RmaCommand</value></property> 
+		<property name="validator"><bean class="com.jeffdouglas.validator.RmaValidator"/></property>	
+	</bean>		
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+            	<prop key="/salesOrderLookup.htm">salesOrderLookupController</prop>
+            	<prop key="/salesOrderDisplay.htm">salesOrderDisplayController</prop>
+            	<prop key="/rmaDisplay.htm">rmaDisplayController</prop>
+            	<prop key="/rmaCreate.htm">rmaCreateController</prop>
+            </props>
+        </property>
+    </bean>
+    
+     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass"><value>org.springframework.web.servlet.view.JstlView</value></property>
+        <property name="prefix"><value>/jsp/</value></property>
+        <property name="suffix"><value>.jsp</value></property>
+    </bean>   
+      
+</beans>

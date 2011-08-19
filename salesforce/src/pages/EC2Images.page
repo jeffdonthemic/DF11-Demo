@@ -1,0 +1,55 @@
+<apex:page controller="EC2ConsoleController" action="{!constructor}">
+	<!-- <apex:messages />  -->
+	<apex:pageMessages />
+	<apex:form >
+		<apex:pageBlock title="Amazon Machine Images">
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!refreshImages}" value="Refresh"
+					rerender="imagesTable" status="imagesStatus" />
+				<apex:actionStatus id="imagesStatus" startText="Please wait ..."></apex:actionStatus>
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection >
+				<apex:pageBlockSectionItem >
+                    Select image owner :
+                    <apex:selectList value="{!owner}" size="1">
+						<apex:selectOptions value="{!owners}" />
+					</apex:selectList>
+				</apex:pageBlockSectionItem>
+
+			</apex:pageBlockSection>
+			<apex:pageblockSection title="Images">
+				<apex:pageBlockTable value="{!images}" var="img" id="imagesTable">
+					<apex:column value="{!img.imageId}">
+						<apex:facet name="header">Id</apex:facet>
+					</apex:column>
+					<apex:column value="{!img.imageLocation}">
+						<apex:facet name="header">Location</apex:facet>
+					</apex:column>
+					<apex:column value="{!img.imageState}">
+						<apex:facet name="header">State</apex:facet>
+					</apex:column>
+					<apex:column value="{!img.imageOwnerId}">
+						<apex:facet name="header">Owner Id</apex:facet>
+					</apex:column>
+					<apex:column value="{!img.isPublic}">
+						<apex:facet name="is Public">Id</apex:facet>
+					</apex:column>
+					<apex:column value="{!img.architecture}">
+						<apex:facet name="header">Architecture</apex:facet>
+					</apex:column>
+					<apex:column value="{!img.imageType}">
+						<apex:facet name="header">imageType</apex:facet>
+					</apex:column>
+					<apex:column >
+						<apex:commandLink action="{!RunInstances}" status="imagesStatus">
+							<apex:param name="imageId" value="{!img.imageId}"></apex:param>
+							<apex:image url="{!$Resource.EC2Console_StartImage}" width="24"
+								height="24" title="Boot Image" />
+						</apex:commandLink>
+					</apex:column>
+				</apex:pageBlockTable>
+			</apex:pageblockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

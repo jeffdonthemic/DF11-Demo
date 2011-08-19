@@ -1,0 +1,65 @@
+<apex:page controller="EC2ConsoleController" sidebar="true"  action="{!constructor}">
+
+	<!-- <apex:messages />  -->
+	<apex:pageMessages />
+	<apex:form >
+
+		<apex:pageBlock title="Amazon EC2 Console">
+
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!refreshInstances}" value="Refresh"
+					rerender="instancesTable" status="instancesStatus" />
+				<apex:actionStatus id="instancesStatus" startText="Please wait ..."></apex:actionStatus>
+			</apex:pageBlockButtons>
+
+			<apex:pageblockSection title="Instances">
+				<apex:pageBlockTable value="{!instances}" var="ins"
+					id="instancesTable">
+					<apex:column value="{!ins.instanceId}">
+						<apex:facet name="header">Id</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.imageId}">
+						<apex:facet name="header">Image Id</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.instanceStateName}">
+						<apex:facet name="header">State</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.privateDNSName}">
+						<apex:facet name="header">Private DNS</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.dnsName}">
+						<apex:facet name="header">Public DNS</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.amiLaunchIndex}">
+						<apex:facet name="header">Launch Index</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.launchTime}">
+						<apex:facet name="header">Launch Time</apex:facet>
+					</apex:column>
+					<apex:column value="{!ins.availabilityZone}">
+						<apex:facet name="header">Zone</apex:facet>
+					</apex:column>
+					<apex:column >
+						<apex:commandLink action="{!TerminateInstances}"
+							rendered="{!ins.instanceStateName == 'running'}"
+							status="instancesStatus">
+							<apex:param name="instanceId" value="{!ins.instanceId}"></apex:param>
+							<apex:image url="{!$Resource.EC2Console_ShutdownImage}"
+								width="24" height="24" title="Shutdown Instance" />
+						</apex:commandLink>
+					</apex:column>
+					<apex:column >
+						<apex:commandLink action="{!RebootInstances}"
+							rendered="{!ins.instanceStateName == 'running'}"
+							status="instancesStatus">
+							<apex:param name="instanceId" value="{!ins.instanceId}"></apex:param>
+							<apex:image url="{!$Resource.EC2Console_RebootImage}" width="24"
+								height="24" title="Reboot Instance" />
+						</apex:commandLink>
+					</apex:column>
+				</apex:pageBlockTable>
+			</apex:pageblockSection>
+		</apex:pageBlock>
+
+	</apex:form>
+</apex:page>

@@ -1,0 +1,159 @@
+<apex:page controller="AWS_ExplorerCon" action="{!constructor}">
+	<apex:pageMessages />
+	<apex:stylesheet value="{!URLFOR($Resource.YUI, 'yui/build/assets/yui.css?v=2')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.YUI, 'yui/build/assets/dpSyntaxHighlighter.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.YUI, 'yui/build/treeview/assets/skins/sam/treeview.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.YUI, 'yui/build/button/assets/skins/sam/button.css')}" />
+	<apex:stylesheet value="{!URLFOR($Resource.YUI, 'yui/build/container/assets/skins/sam/container.css')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/yuiloader/yuiloader-beta-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/event/event-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/connection/connection-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/treeview/treeview-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/dom/dom-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/element/element-beta-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/button/button-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/dragdrop/dragdrop-min.js')}" />
+	<apex:includeScript value="{!URLFOR($Resource.YUI, 'yui/build/container/container-min.js')}" />
+
+<style>
+.ygtvlabel,.ygtvlabel:link,.ygtvlabel:visited,.ygtvlabel:hover {
+	background-color: transparent;
+	margin-left: 5px;
+}
+</style> 
+	
+	<div style="overflow: auto; height: 400px; width: 450px; border: solid 0px;">
+		<apex:pageBlock title="Amazon Storage Explorer" ><div id="treeDiv1"></div></apex:pageBlock>
+	</div>
+
+	
+<script>
+    var thisNode;
+    var completeCallback;
+    var ready = false;
+</script>
+
+	<apex:outputPanel id="cat_nodes">
+		<script> var cats = []; </script>
+		<apex:repeat value="{!objectNames}" var="n">
+			<script> cats.push("{!n}"); </script>
+		</apex:repeat>
+		<script> cats.sort(); </script>
+	</apex:outputPanel>
+	<apex:form >
+		<apex:actionFunction name="getFields" immediate="true"
+			action="{!getFields}" rerender="fields">
+			<apex:param name="firstParam" assignTo="{!selectedObjectName}"
+				value="" />
+		</apex:actionFunction>
+
+		<apex:actionFunction name="getFieldDetails" immediate="true"
+			action="{!getFieldDetails}" rerender="field">
+			<apex:param name="objectName" assignTo="{!selectedObjectName}"
+				value="" />
+			<apex:param name="fieldName" assignTo="{!selectedFieldName}" value="" />
+		</apex:actionFunction>
+	</apex:form>
+
+	<apex:outputPanel id="fields">
+		<script> 
+    if (completeCallback != undefined) {
+        <apex:repeat value="{!objectNames}" var="n">
+            newNode("{!n}", false, thisNode, "field").loadChildren = getFieldDetails;
+        </apex:repeat>
+        if (completeCallback != undefined) { completeCallback(); }
+    }
+    </script>
+	</apex:outputPanel>
+
+	<apex:outputPanel id="field">
+		<script>
+        if (completeCallback != undefined) {
+            var typeNode = newNode("Key = {!selectedField.Key}", true, thisNode, "staticLoad");
+            newNode("Last Modified = {!selectedField.LastModified}", true, thisNode);
+          //  newNode("ETag = {!selectedField.ETag}", true, thisNode);
+            newNode("Size = {!selectedField.Size}", true, thisNode);
+            newNode("StorageClass = {!selectedField.StorageClass}", true, thisNode);
+        }
+        </script>
+		<script>
+            if (ready) {
+                completeCallback();
+            }
+    </script>
+	</apex:outputPanel>
+	<script>
+function newNode(label, isLeaf, parentNode, nodeType) {
+    var n = new YAHOO.widget.TextNode(label, parentNode, false);
+    n.isLeaf = isLeaf;
+    n.nodeType = nodeType
+    return n;
+}
+
+YAHOO.namespace("example.container");
+
+YAHOO.example.treeExample = function() {
+
+    var tree, currentIconMode;
+
+    function changeIconMode() {
+        var newVal = parseInt(this.value);
+        if (newVal != currentIconMode) {
+            currentIconMode = newVal;
+        }
+        buildTree();
+    }
+    
+    function loadNodeData(node, fnLoadComplete)  {
+        thisNode = node;
+        completeCallback = fnLoadComplete
+        switch (thisNode.nodeType) {
+            case "objectName":
+                thisNode.loadChildren(node.label);
+                break;
+            case "field":
+                thisNode.loadChildren(node.parent.parent.label, node.label);
+                break;
+           case "staticLoad":
+               fnLoadComplete();
+               break;
+        }
+    }
+
+    function buildTree() {
+        tree = new YAHOO.widget.TreeView("treeDiv1");
+        tree.setDynamicLoad(loadNodeData, currentIconMode);
+
+        //get root node for tree:
+        var root = tree.getRoot();
+        
+        var catsLength = cats.length;
+        
+        for (var i=0; i<catsLength; i++) {
+             var tempNode = new YAHOO.widget.TextNode(cats[i], root, false);
+             tempNode.loadChildren = getFields;
+             tempNode["nodeType"] = "objectName";
+        }
+        tree.draw();
+    }
+
+    return {
+        init: function() {
+            YAHOO.util.Event.on(["mode0", "mode1"], "click", changeIconMode);
+            var el = document.getElementById("mode1");
+            if (el && el.checked) {
+                currentIconMode = parseInt(el.value);
+            } else {
+                currentIconMode = 0;
+            }
+
+            buildTree();
+            YAHOO.example.container.dialog1.render();
+            YAHOO.util.Event.addListener("show", "click", showDialog, YAHOO.example.container.dialog1, true);        }
+    }
+} ();
+YAHOO.util.Event.onDOMReady(YAHOO.example.treeExample.init, YAHOO.example.treeExample,true);
+ready = true;
+</script>
+
+</apex:page>

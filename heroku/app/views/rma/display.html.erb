@@ -1,0 +1,8 @@
+<% @json["records"].each do |record| %>
+	RMA: <%= record["Name"] %><br>
+	Sales Order: <%= record["Sales_Order__r"]["Name"] %><br>
+	Items: <%= record["Items_Returned__c"] %><br>
+	Status: <%= record["Status__c"] %><br>
+<% end %>
+
+

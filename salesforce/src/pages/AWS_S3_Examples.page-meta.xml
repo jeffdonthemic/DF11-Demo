@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>15.0</apiVersion>
+    <description>Examples of using Apex class for S3</description>
+    <label>AWS_S3_Examples</label>
+</ApexPage>
